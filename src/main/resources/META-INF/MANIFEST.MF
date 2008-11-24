@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 1
+Bundle-Name: Nuxeo XMLRPC Server
+Bundle-SymbolicName: org.nuxeo.ecm.platform.xmlrpc
+Bundle-Version: 1.0.0
+Bundle-Vendor: Nuxeo
+Require-Bundle: org.nuxeo.ecm.core.api,
+ org.nuxeo.ecm.platform.ui
+Nuxeo-Component: OSGI-INF/auth-contrib.xml,
+ OSGI-INF/xmlrpc-connector-framework.xml,
+ OSGI-INF/xmlrpc-connector-contrib.xml

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<fragment>
+    <extension target="application#MODULE">
+        <module>
+            <java>${bundle.fileName}</java>
+        </module>
+    </extension>
+
+    <!-- Enable authentication for Dav requests -->
+    <extension target="web#STD-AUTH-FILTER">
+        <filter-mapping>
+            <filter-name>NuxeoAuthenticationFilter</filter-name>
+            <url-pattern>/rpc/*</url-pattern>
+            <dispatcher>REQUEST</dispatcher>
+            <dispatcher>FORWARD</dispatcher>
+        </filter-mapping>
+    </extension>
+
+    <!-- DAV Servlet mapping -->
+    <extension target="web#SERVLET">
+        <servlet>
+            <servlet-name>Nuxeo XMLRPC Servlet</servlet-name>
+            <servlet-class>
+                org.nuxeo.ecm.platform.xmlrpc.connector.NuxeoXmlRpcServlet
+            </servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>Nuxeo XMLRPC Servlet</servlet-name>
+            <url-pattern>/rpc/*</url-pattern>
+        </servlet-mapping>
+    </extension>
+</fragment>
+

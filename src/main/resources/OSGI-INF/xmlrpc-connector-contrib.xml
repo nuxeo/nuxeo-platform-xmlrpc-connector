@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<component
+	name="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcService.defaultContrib">
+
+	<extension
+		target="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcService"
+		point="MappingHandlers">
+
+		<documentation>Default configuration</documentation>
+
+		<mappingHandler name="pojo"
+			class="org.nuxeo.ecm.platform.xmlrpc.mapping.PojoHandlerMapping" />
+		<mappingHandler name="seam"
+			class="org.nuxeo.ecm.platform.xmlrpc.mapping.SeamHandlerMapping" />
+
+	</extension>
+	<extension
+		target="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcService"
+		point="Handlers">
+
+		<handler name="simpleTest"
+			class="org.nuxeo.ecm.platform.xmlrpc.handlers.TestHandler"
+			mapping="pojo" />
+
+	</extension>
+
+</component>

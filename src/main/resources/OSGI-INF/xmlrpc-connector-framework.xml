@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcService">
+  <implementation
+          class="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcService" />
+  <documentation>
+    @author Thierry Delprat (td@nuxeo.com)
+    Configuration service for Nuxeo XMLRPC Servlet.
+  </documentation>
+
+  <service>
+    <provide
+      interface="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcManager" />
+  </service>
+
+  <extension-point name="MappingHandlers">
+  <documentation>
+    @author Thierry Delprat (td@nuxeo.com)
+  </documentation>
+    <object
+      class="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcHandlerMappingDescriptor" />
+  </extension-point>
+
+  <extension-point name="Handlers">
+  <documentation>
+    @author Thierry Delprat (td@nuxeo.com)
+  </documentation>
+    <object
+      class="org.nuxeo.ecm.platform.xmlrpc.service.XmlRpcHandlerDescriptor" />
+  </extension-point>
+
+</component>
