@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.ecm.platform.web.common.requestcontroller.service.RequestControllerService.xmlRPC">
+
+  <extension target="org.nuxeo.ecm.platform.web.common.requestcontroller.service.RequestControllerService"
+    point="filterConfig">
+
+    <filterConfig name="xmlrpc" transactional="true" synchonize="true">
+      <pattern>/nuxeo/rpc/.*</pattern>
+    </filterConfig>
+
+  </extension>
+
+</component>
