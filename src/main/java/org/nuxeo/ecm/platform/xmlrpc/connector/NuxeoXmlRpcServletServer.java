@@ -189,6 +189,7 @@ public class NuxeoXmlRpcServletServer extends XmlRpcServletServer {
                 istream.close();
                 istream = null;
                 error = null;
+                XmlRpcLogger.log(ssc.getRequest(), request, result);
                 log.debug("execute: Request performed successfully");
             } catch (Throwable t) {
                 log.error("execute: Error while performing request", t);
