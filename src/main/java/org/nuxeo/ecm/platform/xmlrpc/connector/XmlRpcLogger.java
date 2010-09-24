@@ -21,32 +21,23 @@ import org.nuxeo.runtime.api.Framework;
 public class XmlRpcLogger {
 	
 	
-	public static final String KEY_XMLRPC_LOG_ENABLED = "xmlrpc.log.enabled";
 	public static final String KEY_XMLRPC_BLOB_DIRECTORY = "xmlrpc.blob.directory";
 	
 	private static final Log log = LogFactory.getLog(XmlRpcLogger.class);
 	
-	static boolean on = false;
 	static File blobDirectory;
 	
 	static  {
-		String s = Framework.getProperty(KEY_XMLRPC_LOG_ENABLED);
-		if ( s != null && ("true".equals(s.toLowerCase()) || "1".equals(s))){
-			on = true;
-			String dir = Framework.getProperty(KEY_XMLRPC_BLOB_DIRECTORY);
-			if ( dir != null ) {
-				blobDirectory = new File(dir);
-			} else  {
-				blobDirectory = new File( System.getProperty("java.io.tmpdir"));
-			}
+		String dir = Framework.getProperty(KEY_XMLRPC_BLOB_DIRECTORY);
+		if ( dir != null ) {
+			blobDirectory = new File(dir);
+		} else  {
+			blobDirectory = new File( System.getProperty("java.io.tmpdir"));
 		}
 		
 	}
 	
 	public static void log(HttpServletRequest httpRequest, XmlRpcRequest xmlRpcRequest, Object resultObject){
-		if( !on ){
-			return;
-		}
 		String sid = httpRequest.getSession().getId();
 		
 		String url = httpRequest.getRequestURL().toString();
@@ -64,7 +55,7 @@ public class XmlRpcLogger {
 		
 		String result = resultObject.toString();
 		String logMsg = String.format("sid: %s; user: %s; url: %s; method: %s; params: %s; result: %s", sid, user, url, method, parameters, result);
-		log.info(logMsg);
+		log.debug(logMsg);
 		
 	}
 
