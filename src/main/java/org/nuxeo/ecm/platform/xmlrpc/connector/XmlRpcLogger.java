@@ -20,7 +20,7 @@ import org.nuxeo.runtime.api.Framework;
  */
 public class XmlRpcLogger {
 	
-	
+	private static final String NUXEO_DOMAIN = "Nuxeo-Domain";
 	public static final String KEY_XMLRPC_BLOB_DIRECTORY = "xmlrpc.blob.directory";
 	
 	private static final Log log = LogFactory.getLog(XmlRpcLogger.class);
@@ -41,6 +41,8 @@ public class XmlRpcLogger {
 		String sid = httpRequest.getSession().getId();
 		
 		String url = httpRequest.getRequestURL().toString();
+		
+		String domain = httpRequest.getHeader(NUXEO_DOMAIN);
 	
 		String user = "N/A";
 		Principal userPrincipal = httpRequest.getUserPrincipal();
@@ -54,7 +56,7 @@ public class XmlRpcLogger {
 		String parameters = parameters(xmlRpcRequest);
 		
 		String result = resultObject.toString();
-		String logMsg = String.format("sid: %s; user: %s; url: %s; method: %s; params: %s; result: %s", sid, user, url, method, parameters, result);
+		String logMsg = String.format("sid: %s; user: %s; url: %s; domain: %s; method: %s; params: %s; result: %s", sid, user, url, domain, method, parameters, result);
 		log.debug(logMsg);
 		
 	}
