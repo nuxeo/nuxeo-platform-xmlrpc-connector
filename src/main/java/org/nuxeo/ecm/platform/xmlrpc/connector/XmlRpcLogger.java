@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -79,6 +82,9 @@ public class XmlRpcLogger {
 	}
 
 	private static Object toString(Object parameter) {
+		if ( parameter instanceof Object[]) {
+			return Arrays.toString((Object[])parameter);
+		}
 		if ( parameter instanceof Map<?, ?>) {
 			Map<String, Object> map = (Map<String, Object>) parameter;
 			for (Entry<String, Object> entry : map.entrySet()){
