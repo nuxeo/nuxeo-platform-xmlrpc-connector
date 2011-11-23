@@ -18,50 +18,61 @@ import org.apache.xmlrpc.XmlRpcRequest;
 import org.nuxeo.runtime.api.Framework;
 
 /**
- * Class used to the xmlrpc calls of the user 
+ * Class used to the xmlrpc calls of the user
  *
  */
 public class XmlRpcLogger {
-	
+
 	private static final String NUXEO_DOMAIN = "Nuxeo-Domain";
+
 	public static final String KEY_XMLRPC_BLOB_DIRECTORY = "xmlrpc.blob.directory";
-	
+
+	public static final String KEY_XMLRPC_DUMB_BLOBS = "xmlrpc.dump.blobs";
+
 	private static final Log log = LogFactory.getLog(XmlRpcLogger.class);
-	
-	static File blobDirectory;
-	
+
+	static boolean xmlrpcDumpBlobs = false;
+
+	static File xmlrpcBlobDirectory;
+
+
+
 	static  {
-		String dir = Framework.getProperty(KEY_XMLRPC_BLOB_DIRECTORY);
-		if ( dir != null ) {
-			blobDirectory = new File(dir);
+		String tmp = Framework.getProperty(KEY_XMLRPC_BLOB_DIRECTORY);
+		if ( tmp != null ) {
+			xmlrpcBlobDirectory = new File(tmp);
 		} else  {
-			blobDirectory = new File( System.getProperty("java.io.tmpdir"));
+			xmlrpcBlobDirectory = new File( System.getProperty("java.io.tmpdir"));
 		}
-		
+		tmp = Framework.getProperty(KEY_XMLRPC_DUMB_BLOBS);
+		if ( tmp != null && ("1".equals(tmp.trim()) || "true".equals(tmp.trim().toLowerCase())) ) {
+			xmlrpcDumpBlobs = true;
+		}
+
 	}
-	
+
 	public static void log(HttpServletRequest httpRequest, XmlRpcRequest xmlRpcRequest, Object resultObject){
 		String sid = httpRequest.getSession().getId();
-		
+
 		String url = httpRequest.getRequestURL().toString();
-		
+
 		String domain = httpRequest.getHeader(NUXEO_DOMAIN);
-	
+
 		String user = "N/A";
 		Principal userPrincipal = httpRequest.getUserPrincipal();
 		if ( userPrincipal != null ){
 			user = userPrincipal.getName();
 		}
-		
+
 		String method = xmlRpcRequest.getMethodName();
 		method = method.substring(method.lastIndexOf('.')+1);
-		
+
 		String parameters = parameters(xmlRpcRequest);
-		
+
 		String result = resultObject.toString();
 		String logMsg = String.format("sid: %s; user: %s; url: %s; domain: %s; method: %s; params: %s; result: %s", sid, user, url, domain, method, parameters, result);
 		log.debug(logMsg);
-		
+
 	}
 
 	private static String parameters(XmlRpcRequest xmlRpcRequest) {
@@ -88,7 +99,7 @@ public class XmlRpcLogger {
 		if ( parameter instanceof Map<?, ?>) {
 			Map<String, Object> map = (Map<String, Object>) parameter;
 			for (Entry<String, Object> entry : map.entrySet()){
-				if ( entry.getValue() instanceof byte[] ){
+				if ( entry.getValue() instanceof byte[] && xmlrpcDumpBlobs ){
 					byte[] content = (byte[]) entry.getValue();
 					File file = saveInFile(content);
 					map.put(entry.getKey(), file.toURI().toString());
@@ -99,12 +110,12 @@ public class XmlRpcLogger {
 	}
 
 	private static File saveInFile(byte[] content) {
-		if ( !blobDirectory.exists() ) {
-			blobDirectory.mkdirs();
+		if ( !xmlrpcBlobDirectory.exists() ) {
+			xmlrpcBlobDirectory.mkdirs();
 		}
 		FileOutputStream fos = null;
 		try {
-			File file = File.createTempFile("file_", ".dump", blobDirectory);
+			File file = File.createTempFile("file_", ".dump", xmlrpcBlobDirectory);
 			fos = new FileOutputStream(file);
 			fos.write(content);
 			return file;

@@ -11,6 +11,7 @@
   </parent>
 
   <artifactId>nuxeo-platform-xmlrpc-connector</artifactId>
+  <version>5.3.2-NX5-SNAPSHOT</version>
   <name>Nuxeo XML RPC Connector</name>
   <description>Connector to map XML-RPC requests to Nuxeo classes</description>
 
