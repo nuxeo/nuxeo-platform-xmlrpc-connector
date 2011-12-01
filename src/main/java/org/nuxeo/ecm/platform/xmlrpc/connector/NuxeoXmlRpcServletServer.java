@@ -182,9 +182,10 @@ public class NuxeoXmlRpcServletServer extends XmlRpcServletServer {
             Object result;
             Throwable error;
             InputStream istream = null;
+            XmlRpcRequest request = null;
             try {
                 istream = getInputStream(pConfig, pConnection);
-                XmlRpcRequest request = getRequest(pConfig, istream, handlerPrefix);
+                request = getRequest(pConfig, istream, handlerPrefix);
                 result = execute(request);
                 istream.close();
                 istream = null;
@@ -193,6 +194,9 @@ public class NuxeoXmlRpcServletServer extends XmlRpcServletServer {
                 log.debug("execute: Request performed successfully");
             } catch (Throwable t) {
                 log.error("execute: Error while performing request", t);
+                if ( request != null ) {// try to log the request also
+                	 XmlRpcLogger.log(ssc.getRequest(), request, "ERR: request failed: " + t.getMessage());
+                }
                 result = null;
                 error = t;
             } finally {

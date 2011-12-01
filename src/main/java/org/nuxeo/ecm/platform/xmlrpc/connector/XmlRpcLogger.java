@@ -69,9 +69,14 @@ public class XmlRpcLogger {
 
 		String parameters = parameters(xmlRpcRequest);
 
-		String result = resultObject.toString();
-		String logMsg = String.format("sid: %s; user: %s; url: %s; domain: %s; method: %s; params: %s; result: %s", sid, user, url, domain, method, parameters, result);
-		log.debug(logMsg);
+		String result = null;
+		if ( resultObject != null) {
+			result = resultObject.toString();
+		}
+		if ( log.isDebugEnabled() ) {
+			String logMsg = String.format("sid: %s; user: %s; url: %s; domain: %s; method: %s; params: %s; result: %s", sid, user, url, domain, method, parameters, result);
+			log.debug(logMsg);
+		}
 
 	}
 
