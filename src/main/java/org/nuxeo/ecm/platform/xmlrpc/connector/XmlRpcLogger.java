@@ -107,7 +107,11 @@ public class XmlRpcLogger {
 				if ( entry.getValue() instanceof byte[] && xmlrpcDumpBlobs ){
 					byte[] content = (byte[]) entry.getValue();
 					File file = saveInFile(content);
-					map.put(entry.getKey(), file.toURI().toString());
+					if ( file != null ) {
+						map.put(entry.getKey(), file.toURI().toString());
+					} else  {
+						map.put(entry.getKey(), "ERR"); // failed to wtite the content to filesystem
+					}
 				}
 			}
 		}
